@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>IF Clause Exercise</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #eef2f7; padding: 20px; }
+    h1 { color: #2c3e50; }
+    .question-box { background: #fff; padding: 15px; margin: 15px 0; border-radius: 5px; border-left: 5px solid #3498db; }
+    .options label { display: block; margin: 5px 0; }
+    .feedback { margin-top: 10px; font-weight: bold; }
+    .score-box { margin-top: 20px; font-size: 1.2em; color: green; }
+    button { margin-top: 10px; padding: 8px 12px; background: #3498db; color: white; border: none; border-radius: 4px; cursor: pointer; }
+    button:disabled { background: gray; }
+  </style>
+</head>
+<body>
+
+<h1>🧠 IF Clause Exercise</h1>
+<div id="game"></div>
+<div class="score-box" id="scoreBox">Score: 0 / 10</div>
+
+<script>
+const questions = [
+  {
+    q: "1. If it rains tomorrow, _____ at home.",
+    options: [
+      "we would stay",
+      "we will stay",
+      "we stayed",
+      "we had stayed"
+    ],
+    answer: 1,
+    reason: "This is a first conditional. Structure: If + present simple, will + base verb."
+  },
+  {
+    q: "2. If I had known about the party, I _____.",
+    options: [
+      "will come",
+      "would have come",
+      "would come",
+      "come"
+    ],
+    answer: 1,
+    reason: "This is a third conditional. 'If + had + past participle, would have + past participle'."
+  },
+  {
+    q: "3. If I were you, I _____ take that job.",
+    options: [
+      "will",
+      "would",
+      "shall",
+      "have"
+    ],
+    answer: 1,
+    reason: "This is a second conditional. 'If + past simple, would + base verb'."
+  },
+  {
+    q: "4. I will call you if I _____ late.",
+    options: [
+      "am",
+      "was",
+      "would be",
+      "had been"
+    ],
+    answer: 0,
+    reason: "First conditional. Present tense in the 'if' clause."
+  },
+  {
+    q: "5. If she _____ harder, she would pass the exam.",
+    options: [
+      "studies",
+      "studied",
+      "study",
+      "had studied"
+    ],
+    answer: 1,
+    reason: "Second conditional. 'If + past simple, would + base verb'."
+  },
+  {
+    q: "6. They would have arrived on time if they _____ earlier.",
+    options: [
+      "leave",
+      "left",
+      "had left",
+      "would leave"
+    ],
+    answer: 2,
+    reason: "Third conditional. 'If + had + past participle, would have + past participle'."
+  },
+  {
+    q: "7. If he _____ a car, he would drive to work.",
+    options: [
+      "have",
+      "has",
+      "had",
+      "having"
+    ],
+    answer: 2,
+    reason: "Second conditional. 'If + past simple, would + base verb'."
+  },
+  {
+    q: "8. If we heat ice, it _____.",
+    options: [
+      "melted",
+      "melts",
+      "would melt",
+      "will melt"
+    ],
+    answer: 1,
+    reason: "Zero conditional. 'If + present simple, present simple'. Used for facts/laws."
+  },
+  {
+    q: "9. If you had studied more, you _____ the test.",
+    options: [
+      "would pass",
+      "will pass",
+      "would have passed",
+      "pass"
+    ],
+    answer: 2,
+    reason: "Third conditional: 'If + had + past participle, would have + past participle'."
+  },
+  {
+    q: "10. If I _____ enough money, I’ll buy a new phone.",
+    options: [
+      "had",
+      "have",
+      "would have",
+      "was having"
+    ],
+    answer: 1,
+    reason: "First conditional: 'If + present simple, will + base verb'."
+  }
+];
+
+let score = 0;
+
+function renderGame() {
+  const container = document.getElementById('game');
+  questions.forEach((item, index) => {
+    const qDiv = document.createElement('div');
+    qDiv.classList.add('question-box');
+
+    qDiv.innerHTML = `<p>${item.q}</p>`;
+    const optionsDiv = document.createElement('div');
+
+    item.options.forEach((opt, i) => {
+      optionsDiv.innerHTML += `
+        <label><input type="radio" name="q${index}" value="${i}"> ${opt}</label>
+      `;
+    });
+
+    const feedback = document.createElement('div');
+    feedback.id = `feedback${index}`;
+    feedback.classList.add('feedback');
+
+    const submitBtn = document.createElement('button');
+    submitBtn.textContent = "Submit";
+    submitBtn.onclick = () => checkAnswer(index);
+    submitBtn.id = `btn${index}`;
+
+    qDiv.appendChild(optionsDiv);
+    qDiv.appendChild(submitBtn);
+    qDiv.appendChild(feedback);
+    container.appendChild(qDiv);
+  });
+}
+
+function checkAnswer(qIndex) {
+  const selected = document.querySelector(`input[name="q${qIndex}"]:checked`);
+  const feedback = document.getElementById(`feedback${qIndex}`);
+  const submitBtn = document.getElementById(`btn${qIndex}`);
+
+  if (!selected) {
+    feedback.innerHTML = "<span style='color: red;'>Please select an answer.</span>";
+    return;
+  }
+
+  const answer = parseInt(selected.value);
+  if (answer === questions[qIndex].answer) {
+    if (!feedback.classList.contains("answered")) {
+      score++;
+      document.getElementById("scoreBox").textContent = `Score: ${score} / 10`;
+    }
+    feedback.innerHTML = `<span style="color: green;">Correct! ✔ ${questions[qIndex].reason}</span>`;
+  } else {
+    feedback.innerHTML = `<span style="color: red;">Incorrect ✘ - ${questions[qIndex].reason}</span>`;
+  }
+
+  feedback.classList.add("answered");
+  submitBtn.disabled = true;
+}
+
+renderGame();
+</script>
+
+</body>
+</html>
